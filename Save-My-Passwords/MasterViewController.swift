@@ -44,6 +44,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
          
     // If appropriate, configure the new managed object.
     newEvent.timestamp = NSDate()
+    newEvent.password = "MyNEWPassword" //createNewPassword()
+    newEvent.application = "MyNEWApplication" //promptForApplication()
 
     // Save the context.
     do {

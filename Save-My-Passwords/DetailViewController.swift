@@ -11,13 +11,24 @@ import UIKit
 class DetailViewController: UIViewController {
 
   @IBOutlet weak var detailDescriptionLabel: UILabel!
-
+  @IBOutlet weak var detailPasswordLabel: UILabel!
+  @IBOutlet weak var detailApplicationNameLabel: UILabel!
 
   func configureView() {
     // Update the user interface for the detail item.
-    if let detail = self.detailItem {
-        if let label = self.detailDescriptionLabel {
-            label.text = detail.timestamp!.description
+    if let detail = self.detailItem 
+    {
+      if let label = self.detailDescriptionLabel
+        {
+          label.text = detail.timestamp!.description
+        }
+      if let label = self.detailPasswordLabel
+        {
+          label.text = detail.password!.description
+        }
+      if let label = self.detailApplicationNameLabel
+        {
+          label.text = detail.application!.description
         }
     }
   }
