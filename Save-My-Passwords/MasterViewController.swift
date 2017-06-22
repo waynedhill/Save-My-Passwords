@@ -9,8 +9,8 @@
 import UIKit
 import CoreData
 
-class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate {
-
+class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate 
+{
   var detailViewController: DetailViewController? = nil
   var managedObjectContext: NSManagedObjectContext? = nil
 
@@ -18,6 +18,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
+NSLog("\n1-MasterVC:viewDidLoad")
     self.navigationItem.leftBarButtonItem = self.editButtonItem
 
     let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
@@ -28,17 +29,23 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
   }
 
-  override func viewWillAppear(_ animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) 
+  {
+NSLog("\n2-MasterVC:viewWillAppear")
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.isCollapsed
     super.viewWillAppear(animated)
   }
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
+NSLog("\nMasterVC:didReceiveMemoryWarning")
     // Dispose of any resources that can be recreated.
   }
 
-  func insertNewObject(_ sender: Any) {
+  func insertNewObject(_ sender: Any) 
+  {
+NSLog("\nMasterVC:insertNewObject")
+
     let context = self.fetchedResultsController.managedObjectContext
     let newEvent = Event(context: context)
          
@@ -60,7 +67,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
   // MARK: - Segues
 
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) 
+  {
+NSLog("\n9-MasterVC:prepareForSegue")
+
     if segue.identifier == "showDetail" {
         if let indexPath = self.tableView.indexPathForSelectedRow {
         let object = self.fetchedResultsController.object(at: indexPath)
@@ -74,28 +84,40 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
   // MARK: - Table View
 
-  override func numberOfSections(in tableView: UITableView) -> Int {
+  override func numberOfSections(in tableView: UITableView) -> Int 
+  {
+NSLog("\n3-MasterVC:numberOfSections")
     return self.fetchedResultsController.sections?.count ?? 0
   }
 
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int 
+  {
+NSLog("\n5-MasterVC:numberOfRowsInSection")
+
     let sectionInfo = self.fetchedResultsController.sections![section]
     return sectionInfo.numberOfObjects
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell 
+  {
+NSLog("\n6-MasterVC:cellForRow")
     let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
     let event = self.fetchedResultsController.object(at: indexPath)
     self.configureCell(cell, withEvent: event)
     return cell
   }
 
-  override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+  override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool 
+  {
+NSLog("\n7-MasterVC:canEditRowAt")
     // Return false if you do not want the specified item to be editable.
     return true
   }
 
-  override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+  override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) 
+  {
+NSLog("\nMasterVC:commit editingStyle")
+
     if editingStyle == .delete {
         let context = self.fetchedResultsController.managedObjectContext
         context.delete(self.fetchedResultsController.object(at: indexPath))
@@ -111,13 +133,17 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
   }
 
-  func configureCell(_ cell: UITableViewCell, withEvent event: Event) {
+  func configureCell(_ cell: UITableViewCell, withEvent event: Event) 
+  {
+NSLog("\n8-MasterVC:configureCell")
     cell.textLabel!.text = event.timestamp!.description
   }
 
   // MARK: - Fetched results controller
 
-  var fetchedResultsController: NSFetchedResultsController<Event> {
+  var fetchedResultsController: NSFetchedResultsController<Event> 
+  {
+NSLog("\n4-MasterVC:fetchedResultsController")
       if _fetchedResultsController != nil {
           return _fetchedResultsController!
       }
@@ -151,11 +177,16 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
   }    
   var _fetchedResultsController: NSFetchedResultsController<Event>? = nil
 
-  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) 
+  {
+NSLog("\nMasterVC:controllerWillChangeContent")
       self.tableView.beginUpdates()
   }
 
-  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) 
+  {
+NSLog("\nMasterVC:controller didChange sectionInfo")
+
       switch type {
           case .insert:
               self.tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
@@ -166,7 +197,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
       }
   }
 
-  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) 
+  {
+NSLog("\nMasterVC:controller didChange anObject")
+
       switch type {
           case .insert:
               tableView.insertRows(at: [newIndexPath!], with: .fade)
@@ -179,7 +213,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
       }
   }
 
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) 
+  {
+NSLog("\nMasterVC:controllerDidChangeContent")
+
       self.tableView.endUpdates()
   }
 

@@ -8,13 +8,17 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController 
+{
 
   @IBOutlet weak var detailDescriptionLabel: UILabel!
   @IBOutlet weak var detailPasswordLabel: UILabel!
   @IBOutlet weak var detailApplicationNameLabel: UILabel!
 
-  func configureView() {
+  func configureView() 
+  {
+NSLog("\n2-DetailVC:configureView")
+
     // Update the user interface for the detail item.
     if let detail = self.detailItem 
     {
@@ -33,24 +37,30 @@ class DetailViewController: UIViewController {
     }
   }
 
-  override func viewDidLoad() {
+  override func viewDidLoad() 
+  {
     super.viewDidLoad()
+NSLog("\n3-DetailVC:viewDidLoad")
     // Do any additional setup after loading the view, typically from a nib.
     self.configureView()
   }
 
-  override func didReceiveMemoryWarning() {
+  override func didReceiveMemoryWarning() 
+  {
     super.didReceiveMemoryWarning()
+NSLog("\nDetailVC:didReceiveMemoryWarning")
     // Dispose of any resources that can be recreated.
   }
 
-  var detailItem: Event? {
-    didSet {
+  var detailItem: Event? 
+  {
+    didSet 
+    {
+NSLog("\n1-DetailVC:Event didSet")
+
         // Update the view.
         self.configureView()
     }
   }
-
-
 }
 
